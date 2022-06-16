@@ -27,8 +27,7 @@ public class ItemRepository implements Repository<Item> {
     }
 
     public Item read(String id) {
-        List<Item> items = new ArrayList<>();
-        collection().find(Filters.eq(id)).forEach(items::add);
+        List<Item> items = toList(collection().find(Filters.eq(id)));
 
         if (items.size() != 1)
             return null;
@@ -37,9 +36,7 @@ public class ItemRepository implements Repository<Item> {
     }
 
     public List<Item> read() {
-        List<Item> items = new ArrayList<>();
-        collection().find().forEach(items::add);
-        return items;
+        return toList(collection().find());
     }
 
     public Item create(Item item) {
@@ -65,13 +62,13 @@ public class ItemRepository implements Repository<Item> {
 
     public Item delete(String id) {
         Item target = read(id);
-        if(target == null)
+        if (target == null)
             return null;
 
         DeleteResult result = collection().deleteOne(Filters.eq(id));
         LOG.info("delete result:  {}", result);
 
-        if(result.getDeletedCount() != 1)
+        if (result.getDeletedCount() != 1)
             return null;
 
         return target;
@@ -79,5 +76,11 @@ public class ItemRepository implements Repository<Item> {
 
     private MongoCollection<Item> collection() {
         return client.getDatabase(DATABASE).getCollection(COLLECTION, Item.class);
+    }
+
+    private static List<Item> toList(Iterable<Item> iterable) {
+        List<Item> items = new ArrayList<>();
+        iterable.forEach(items::add);
+        return items;
     }
 }

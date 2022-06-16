@@ -3,7 +3,7 @@ package land.brow.model;
 import java.util.Date;
 import java.util.UUID;
 
-public class Item implements DAO{
+public class Item implements DAO {
     private String id;
     private String text;
     private Date date;

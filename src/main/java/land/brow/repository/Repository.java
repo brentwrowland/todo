@@ -5,13 +5,13 @@ import land.brow.model.DAO;
 import java.util.List;
 
 public interface Repository<E extends DAO> {
-    public List<E> read();
+    List<E> read();
 
-    public E read(String id);
+    E read(String id);
 
-    public E create(E object);
+    E create(E object);
 
-    public E update(String id, E object);
+    E update(String id, E object);
 
-    public E delete(String id);
+    E delete(String id);
 }
