@@ -29,7 +29,7 @@ public class Item implements DAO {
     }
 
     public void setId(String id) {
-        UUID.fromString(id);
+        UUID.fromString(id); //throw error if string is not formatted as UUID
         this.id = id;
     }
 

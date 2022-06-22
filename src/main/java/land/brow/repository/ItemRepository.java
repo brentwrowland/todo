@@ -1,6 +1,7 @@
 package land.brow.repository;
 
 
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
@@ -8,10 +9,10 @@ import com.mongodb.client.result.DeleteResult;
 import com.mongodb.client.result.InsertOneResult;
 import jakarta.inject.Singleton;
 import land.brow.model.Item;
+import org.bson.conversions.Bson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Singleton
@@ -39,6 +40,13 @@ public class ItemRepository implements Repository<Item> {
         return toList(collection().find());
     }
 
+    public List<Item> read(int limit, int offset)
+    {
+        List<Bson> aggregates = List.of(new BasicDBObject("$skip", offset), new BasicDBObject("$limit", limit));
+
+        return toList(collection().aggregate(aggregates));
+    }
+
     public Item create(Item item) {
         InsertOneResult result = collection().insertOne(item);
         LOG.info("create result:  {}", result);
@@ -59,7 +67,6 @@ public class ItemRepository implements Repository<Item> {
         return read(id);
     }
 
-
     public Item delete(String id) {
         Item target = read(id);
         if (target == null)
@@ -76,11 +83,5 @@ public class ItemRepository implements Repository<Item> {
 
     private MongoCollection<Item> collection() {
         return client.getDatabase(DATABASE).getCollection(COLLECTION, Item.class);
-    }
-
-    private static List<Item> toList(Iterable<Item> iterable) {
-        List<Item> items = new ArrayList<>();
-        iterable.forEach(items::add);
-        return items;
     }
 }
