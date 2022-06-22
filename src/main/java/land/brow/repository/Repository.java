@@ -8,6 +8,8 @@ import java.util.List;
 public interface Repository<E extends DAO> {
     List<E> read();
 
+    List<E> read(int limit, int offset);
+
     E read(String id);
 
     E create(E object);
@@ -15,6 +17,8 @@ public interface Repository<E extends DAO> {
     E update(String id, E object);
 
     E delete(String id);
+
+
 
     default List<E> toList(Iterable<E> iterable) {
         List<E> items = new ArrayList<>();

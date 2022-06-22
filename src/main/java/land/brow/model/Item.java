@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public class Item implements DAO {
     private String id;
+    private String todoID;
     private String text;
     private Date date;
     private Boolean done;
@@ -13,24 +14,40 @@ public class Item implements DAO {
         id = UUID.randomUUID().toString();
     }
 
-    public Item(String id, String text, Date date, Boolean done) {
+    public Item(String id, String todoID, String text, Date date, Boolean done) {
         setId(id);
+        setTodoID(todoID);
         setText(text);
         setDate(date);
         setDone(done);
     }
 
     public Item(Item item) {
-        this(item.id, item.text, item.date, item.done);
+        this.id = item.id;
+        this.todoID = item.todoID;
+        this.text = item.text;
+        this.date = item.date;
+        this.done = item.done;
     }
 
-    public String getId() {
+    @Override
+    public String id() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         UUID.fromString(id); //throw error if string is not formatted as UUID
         this.id = id;
+    }
+
+    public String getTodoID() {
+        return todoID;
+    }
+
+    public void setTodoID(String todoID) {
+        UUID.fromString(id); //throw error if string is not formatted as UUID
+        this.todoID = todoID;
     }
 
     public String getText() {
