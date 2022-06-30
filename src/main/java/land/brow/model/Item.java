@@ -11,7 +11,6 @@ public class Item implements DAO {
     private Boolean done;
 
     public Item() {
-        id = UUID.randomUUID().toString();
     }
 
     public Item(String id, String todoID, String text, Date date, Boolean done) {
@@ -31,7 +30,7 @@ public class Item implements DAO {
     }
 
     @Override
-    public String id() {
+    public String getId() {
         return id;
     }
 
@@ -46,7 +45,7 @@ public class Item implements DAO {
     }
 
     public void setTodoID(String todoID) {
-        UUID.fromString(id); //throw error if string is not formatted as UUID
+        UUID.fromString(todoID); //throw error if string is not formatted as UUID
         this.todoID = todoID;
     }
 

@@ -26,16 +26,20 @@ public class ItemService implements Service<Item> {
 
     @Override
     public Item post(Item entity) {
-        return repository.create(entity);
+
+        return repository.read(repository.create(entity));
     }
 
     @Override
     public Item put(String id, Item entity) {
-        return repository.update(id, entity);
+        return repository.read(repository.update(id, entity));
     }
 
     @Override
     public Item delete(String id) {
-        return repository.delete(id);
+        Item target = repository.read(id);
+        if(!repository.delete(id))
+            return null;
+        return target;
     }
 }
